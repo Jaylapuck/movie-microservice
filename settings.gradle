@@ -1,0 +1,7 @@
+include ':microservices:movie-service'
+include ':microservices:review-service'
+include ':microservices:user-service'
+include ':microservices:movie-composite-service'
+include 'api'
+include 'utils'
+

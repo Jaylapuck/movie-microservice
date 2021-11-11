@@ -1,0 +1,23 @@
+server.port: 7000
+server.error.include-message: always
+app:
+  movie-service:
+    host: localhost
+    port: 7001
+  review-service:
+    host: localhost
+    port: 7002
+logging:
+  level:
+    root: INFO
+    com.forest: DEBUG
+---
+spring.profiles: docker
+server.port: 8080
+app:
+  movie-service:
+    host: movie
+    port: 8080
+  review-service:
+    host: review
+    port: 8080

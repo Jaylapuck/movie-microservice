@@ -1,0 +1,80 @@
+version: '2.1'
+
+services:
+  movie:
+    build: microservices/movie-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+  review:
+    build: microservices/review-service
+    mem_limit: 350m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      mysql:
+        condition: service_healthy
+  user:
+    build: microservices/user-service
+    mem_limit: 350m
+    ports:
+    - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - mongodb
+  movie-composite:
+    build: microservices/movie-composite-service
+    mem_limit: 350m
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+
+  mongodb:
+    image: mongo:3.6.9
+    mem_limit: 350m
+    ports:
+      - "27017:27017"
+    command: mongod --smallfiles
+
+  mysql:
+    image: mysql:5.7
+    mem_limit: 350m
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpwd
+      - MYSQL_DATABASE=movie-review-db
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=pwd
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-uuser", "-ppwd", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+   # entrypoint:
+   #
+      #   echo 'CREATE DATABASE IF NOT EXISTS movie.db; CREATE DATABASE IF NOT EXISTS review.db;' > /docker-entrypoint-initdb.d/init.sql;
+    #  /usr/local/bin/docker-entrypoint.sh --character-set-server=utfmb4 --collation-server-utf8mb4_unicode_ci
+    #  "
+
+
+    # mysqlReview:
+    #  image: mysql:5.7
+    # mem_limit: 350m
+        #ports:
+    #   - "3307:3306"
+        # environment:
+        #  - MYSQL_ROOT_PASSWORD=rootpwd
+        #  - MYSQL_DATABASE=review-db
+        #  - MYSQL_USER=user
+    #  - MYSQL_PASSWORD=pwd
+      #healthcheck:
+      # test: [ "CMD", "mysqladmin", "ping", "-uuser", "-ppwd", "-h", "localhost" ]
+      # interval: 10s
+      #timeout: 5s
+      # retries: 10
