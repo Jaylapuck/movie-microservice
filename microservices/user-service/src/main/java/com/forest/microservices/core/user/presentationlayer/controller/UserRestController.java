@@ -26,11 +26,6 @@ public class UserRestController implements UserServiceAPI {
     @Override
     public User getUser(int userId) {
         LOGGER.debug("/movie MS return the found user for userId: " + userId);
-
-        if (userId < 1) throw new InvalidInputException("Invalid userId: " + userId);
-
-        //if (userId == 14) throw  new NotFoundException("No user found for userId:" + userId);
-
         return userService.getUserById(userId);
     }
 
@@ -45,5 +40,10 @@ public class UserRestController implements UserServiceAPI {
     public void deleteUser(int userId) {
         LOGGER.debug("REST deleteUser: tried to delete userId: {} ", userId);
         userService.deleteUser(userId);
+    }
+
+    @Override
+    public User updateUser(int userId, User model) {
+        return null;
     }
 }

@@ -11,4 +11,6 @@ public interface ReviewService {
     Review createReview(Review model);
 
     void deleteReview(int movieId);
+
+    Review updateReview(int movieId, Review model);
 }

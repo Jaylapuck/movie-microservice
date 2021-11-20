@@ -30,6 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(int userId) {
+        if (userId < 1) throw new InvalidInputException("Invalid userId: " + userId);
         UserEntity entity = repository.findByUserId(userId)
                 .orElseThrow(() -> new NotFoundException("No user found for userId:" + userId));
         User response = mapper.entityToModel(entity);
@@ -56,5 +57,15 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(int userId) {
         LOGGER.debug("deleteUser: trying to delete entity with userId: {}", userId);
         repository.findByUserId(userId).ifPresent(repository::delete);
+    }
+
+    @Override
+    public User updateUser(int userId, User model) {
+        UserEntity entity = repository.findByUserId(userId)
+                .orElseThrow(() -> new NotFoundException("No user found for userId:" + userId));
+        mapper.updateEntity(entity, model);
+        UserEntity newEntity = repository.save(entity);
+        LOGGER.debug("updateUser: entity updated for userId: {}", userId);
+        return mapper.entityToModel(newEntity);
     }
 }

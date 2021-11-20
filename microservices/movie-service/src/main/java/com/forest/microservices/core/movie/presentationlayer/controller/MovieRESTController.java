@@ -3,6 +3,7 @@ package com.forest.microservices.core.movie.presentationlayer.controller;
 import com.forest.api.core.Movie.API.MovieServiceCREATEAPI;
 import com.forest.api.core.Movie.API.MovieServiceDELETEAPI;
 import com.forest.api.core.Movie.API.MovieServiceGETAPI;
+import com.forest.api.core.Movie.API.MovieServiceUPDATEAPI;
 import com.forest.api.core.Movie.Movie;
 import com.forest.microservices.core.movie.businesslayer.MovieService;
 import com.forest.utils.exceptions.InvalidInputException;
@@ -11,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class MovieRESTController implements MovieServiceGETAPI, MovieServiceCREATEAPI, MovieServiceDELETEAPI {
+public class MovieRESTController implements MovieServiceGETAPI, MovieServiceCREATEAPI, MovieServiceDELETEAPI, MovieServiceUPDATEAPI {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MovieRESTController.class);
 
@@ -24,13 +25,6 @@ public class MovieRESTController implements MovieServiceGETAPI, MovieServiceCREA
     @Override
     public Movie getMovie(int movieId) {
         LOGGER.debug("/movie MS return the found movie fort movieId: " + movieId);
-
-        if(movieId < 1) throw new InvalidInputException("invalid movieId: " + movieId);
-
-        //if(movieId == 13) throw new NotFoundException("No movie found for movieId:" + movieId);
-
-        //if(movieId > 100) throw new NumberCannotExceed100Exception("The movieId cannot exceed 100 :"+ movieId);
-
         return movieService.getMoviesById(movieId);
     }
 
@@ -45,5 +39,11 @@ public class MovieRESTController implements MovieServiceGETAPI, MovieServiceCREA
     public void deleteMovie(int movieId) {
         LOGGER.debug("REST deleteMovie: tried to delete movieId: {} ", movieId);
         movieService.deleteMovies(movieId);
+    }
+
+    @Override
+    public Movie updateMovie(int movieId, Movie movie) {
+        LOGGER.debug("REST updateMovie: tried to update movieId: {} ", movieId);
+        return movieService.updateMovie(movieId, movie);
     }
 }

@@ -55,7 +55,7 @@ class MovieServiceApplicationTests {
 	@Test
 	public void createMovie(){
 
-		//create an product model
+		//create a movie model
 		Movie model = new Movie(MOVIE_ID_OKAY, "name-", "director-", "03-12-2005","SA");
 
 		//send the post request
@@ -134,20 +134,6 @@ class MovieServiceApplicationTests {
 
 	}
 
-	@Test
-	public void getMovieIdMovieOver100(){
-		final int MOVIE_ID_OVER_HUNDRED = 150;
-		client.get()
-				.uri("/movie/" + MOVIE_ID_OVER_HUNDRED)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectHeader().contentType(MediaType.APPLICATION_JSON)
-				.expectBody()
-				.jsonPath("$.path").isEqualTo("/movie/" + MOVIE_ID_OVER_HUNDRED)
-				.jsonPath("$.message").isEqualTo("The movieId cannot exceed 100 :" + MOVIE_ID_OVER_HUNDRED);
-
-	}
 
 	@Test
 	void contextLoads() {

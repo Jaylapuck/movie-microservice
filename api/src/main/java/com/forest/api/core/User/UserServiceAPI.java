@@ -21,4 +21,11 @@ public interface UserServiceAPI {
             value = "/user/{userId}"
     )
     void deleteUser(@PathVariable int userId);
+
+    @PutMapping(
+            value = "/user/{userId}",
+            consumes = "application/json",
+            produces = "application/json"
+    )
+    User updateUser(@PathVariable int userId, @RequestBody User model);
 }

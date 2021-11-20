@@ -78,7 +78,7 @@ class MovieCompositeServiceApplicationTests {
 				.expectHeader().contentType(MediaType.APPLICATION_JSON)
 				.expectBody()
 				.jsonPath("$.movieId").isEqualTo(MOVIE_ID_OKAY)
-				.jsonPath("$.review.length()").isEqualTo(1);
+				.jsonPath("$.review.length()").isEqualTo(0);
 	}
 
 	@Test

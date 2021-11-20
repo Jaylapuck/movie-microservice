@@ -3,6 +3,7 @@ package com.forest.microservices.core.movie.businesslayer;
 import com.forest.api.core.Movie.Movie;
 import com.forest.microservices.core.movie.datalayer.MovieEntity;
 import com.forest.microservices.core.movie.datalayer.MovieRepository;
+import com.forest.utils.exceptions.InvalidInputException;
 import com.forest.utils.exceptions.NotFoundException;
 import com.forest.utils.exceptions.NumberCannotExceed100Exception;
 import com.forest.utils.http.ServiceUtil;
@@ -27,11 +28,11 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public Movie getMoviesById(int movieId) {
+
+        if(movieId < 1) throw new InvalidInputException("invalid movieId: " + movieId);
         MovieEntity entity = repository.findByMovieId(movieId);
 
-        if (movieId > 100) {
-            throw new NumberCannotExceed100Exception("The movieId cannot exceed 100 :" + movieId);
-        } else if (entity == null) {
+        if (entity == null) {
             throw new NotFoundException("No movie found for movieId:" + movieId);
         } else {
             Movie response = mapper.entitytoModel(entity);
@@ -55,6 +56,21 @@ public class MovieServiceImpl implements MovieService {
         LOGGER.debug("deleteMovies: trying to delete a movie with productId: {}", movieId);
         if (repository.findByMovieId(movieId) != null){
             repository.delete(repository.findByMovieId(movieId));
+        }
+    }
+
+    @Override
+    public Movie updateMovie(int movieId, Movie model) {
+        LOGGER.debug("updateMovie: trying to update a movie with productId: {}", movieId);
+        MovieEntity entity = repository.findByMovieId(movieId);
+        if (entity == null) {
+            throw new NotFoundException("No movie found for movieId:" + movieId);
+        } else {
+            MovieEntity newEntity = mapper.modelToEntity(model);
+            newEntity.setMovieId(movieId);
+            MovieEntity updatedEntity = repository.save(newEntity);
+            LOGGER.debug("updateMovie: updated a movie entity: {}", movieId);
+            return mapper.entitytoModel(updatedEntity);
         }
     }
 }

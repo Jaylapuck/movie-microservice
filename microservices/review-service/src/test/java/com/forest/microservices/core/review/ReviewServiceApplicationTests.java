@@ -55,22 +55,6 @@ class ReviewServiceApplicationTests {
 	}
 
 	@Test
-	public void getMovieIdOver100(){
-
-		final int MOVIE_ID_VALUE_OVER_100 = 113;
-		client.get()
-				.uri("/review?movieId=" + MOVIE_ID_VALUE_OVER_100)
-				.accept(MediaType.APPLICATION_JSON)
-				.exchange()
-				.expectStatus().isEqualTo(HttpStatus.UNPROCESSABLE_ENTITY)
-				.expectHeader().contentType(MediaType.APPLICATION_JSON)
-				.expectBody()
-				.jsonPath("$.path").isEqualTo("/review")
-				.jsonPath("$.message").isEqualTo("Number cannot exceed 100 :" + MOVIE_ID_VALUE_OVER_100);
-
-	}
-
-	@Test
 	public void getMovieIdInvalidNegativeNumber(){
 
 		final int MOVIE_ID_INVALID_NEGATIVE_VALUE = -1;

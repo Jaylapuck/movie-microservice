@@ -16,4 +16,12 @@ public interface UserMapper {
             @Mapping(target="version", ignore = true)
     })
     UserEntity modelToEntity(User model);
+
+    @Mappings({
+            @Mapping(target= "id", ignore = true),
+            @Mapping(target="version", ignore = true)
+    })
+    UserEntity modelToEntity(User model, UserEntity entity);
+    void updateEntity(UserEntity entity, User model);
+
 }

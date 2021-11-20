@@ -9,4 +9,5 @@ public interface ReviewRepository extends CrudRepository<ReviewEntity, Integer> 
 
     @Transactional(readOnly = true)
     List<ReviewEntity> findByMovieId(int movieId);
+    ReviewEntity findByReviewId(int reviewId);
 }

@@ -9,4 +9,6 @@ public interface UserService {
     User createUser(User model);
 
     void deleteUser(int userId);
+
+    User updateUser(int userId, User model);
 }

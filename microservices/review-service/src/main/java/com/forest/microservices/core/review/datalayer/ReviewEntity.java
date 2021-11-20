@@ -1,10 +1,13 @@
 package com.forest.microservices.core.review.datalayer;
 
+import lombok.Getter;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "reviews", indexes = { @Index(name = "reviews_unique_idx",
-        unique = true, columnList= "movieId,reviewId") })
+@Table(name = "reviews", indexes = {
+        @Index(name = "reviews_unique_idx", columnList = "movieId, reviewId", unique = true)
+})
 public class ReviewEntity {
     @Id
     @GeneratedValue
